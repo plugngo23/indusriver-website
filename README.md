@@ -1,15 +1,11 @@
-# Indus River company page
+# Indus River × PlugNGo
 
-Static mobile-friendly company page pointing customers to PlugNGo.
+Animated 3D landing page based on the user-supplied HTML design. Gentle card tilt, floating CSS device illustrations, gold store button and WhatsApp links. Reduced-motion preferences disable movement. No personal data collection.
 
-- Hosting: GitHub Pages, repository `plugngo23/indusriver-website`, branch `main`.
-- Temporary URL: https://plugngo23.github.io/indusriver-website/
-- Intended domain: https://indusriverae.com/
-- WhatsApp: existing PlugNGo contact +971 55 127 3939.
-- No independent checkout, product inventory, cookies or data collection.
-- Fonts load from Google Fonts, with local system fallbacks.
-- Phone artwork is a CSS illustration, not a claim of stock or a specific model.
+Hosting: GitHub Pages, plugngo23/indusriver-website, main branch.
+Preview: https://plugngo23.github.io/indusriver-website/
+Custom domain indusriverae.com still pending: existing Cloudflare account signed in has no domains. No DNS changes made.
 
-Domain connection pending Cloudflare access. Existing authoritative nameservers are `leo.ns.cloudflare.com` and `mary.ns.cloudflare.com`. Do not change nameservers or email records to connect this website. Bind the domain in GitHub Pages before pointing root A records to GitHub Pages and www CNAME to plugngo23.github.io. Current GitHub documentation: https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
+Laptops, Phones and Accessories open the PlugNGo store. Trade-in and contact open WhatsApp. WhatsApp number uses the current PlugNGo storefront contact.
 
-Validation: desktop 1512px and mobile 390px layouts inspected, no mobile horizontal overflow; published endpoint returned HTTP 200.
+Verified desktop and 390px mobile layout, animation enabled, links and no horizontal overflow.
