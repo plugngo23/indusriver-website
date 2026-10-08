@@ -51,6 +51,13 @@ a:focus-visible{outline:3px solid var(--gold);outline-offset:5px}.trust{font-siz
 @media(max-width:700px){body{padding:60px 18px 52px}.stage{min-height:0}.tilt{max-width:430px}.card{padding:55px 23px 27px;border-radius:27px}.phone{left:-42px;top:-70px;transform:translateZ(40px) rotateY(28deg) rotateZ(-13deg) scale(.38);transform-origin:50% 50%;z-index:2}.laptop{right:-49px;bottom:-90px;transform:translateZ(30px) rotateY(-26deg) rotateZ(7deg) scale(.38);z-index:2}.coin{right:4px;top:-23px;transform:translateZ(40px) scale(.6);z-index:2}.pn{width:74px;height:74px;border-radius:21px;font-size:29px;margin-bottom:18px}.brand{font-size:10px;letter-spacing:2.4px}h1{font-size:clamp(23px,6.8vw,30px);line-height:1.2;margin:12px 0}p{font-size:14px;line-height:1.65;margin-bottom:23px}.go{font-size:16px}.links{gap:10px}.links a{font-size:13px;padding:14px 7px}.whatsapp{font-size:13px}.trust{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.tilt{transform:none!important}.dev{animation:none!important}}
 
+
+/* Glossy bubble response: window-wide pointer tracking and layered depth. */
+.tilt{transition:none;will-change:transform;transform:translate3d(var(--drift-x,0px),var(--drift-y,0px),0) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+.card{border-radius:42px;background:radial-gradient(ellipse at var(--mx,50%) var(--my,30%),rgba(138,216,168,.20),transparent 65%),linear-gradient(145deg,rgba(40,70,56,.94),rgba(14,28,22,.97));box-shadow:0 40px 85px #0009,inset 0 2px 2px #ffffff40,inset 0 -4px 10px #0005}
+.card:before{background:radial-gradient(ellipse at var(--mx,50%) var(--my,30%),#ffffff30,transparent 48%);border:1px solid #ffffff0d;transform:translateZ(2px)}
+.pn{transform:translateZ(95px)}h1{transform:translateZ(75px)}.brand{transform:translateZ(60px)}.go{transform:translateZ(85px)}.go:hover{transform:translateZ(95px) translateY(-2px)}.go:active{transform:translateZ(65px) translateY(6px)}.links{transform:translateZ(50px)}.whatsapp{transform:translateZ(45px)}
+@media(max-width:700px){.card{border-radius:30px}.pn{transform:translateZ(50px)}h1{transform:translateZ(35px)}.brand{transform:translateZ(25px)}.go{transform:translateZ(40px)}.go:hover{transform:translateZ(40px)}.links{transform:translateZ(20px)}}
 </style>
 </head>
 <body>
@@ -78,15 +85,15 @@ a:focus-visible{outline:3px solid var(--gold);outline-offset:5px}.trust{font-siz
 </div>
 <script>
 (function(){
-const tilt=document.getElementById('tilt'),stage=document.getElementById('stage'),reduced=matchMedia('(prefers-reduced-motion:reduce)'),fine=matchMedia('(pointer:fine)');
-let frame=0,last=0,hover=false,start=performance.now();
-function set(x,y){tilt.style.setProperty('--ry',(x*10).toFixed(2)+'deg');tilt.style.setProperty('--rx',(-y*8).toFixed(2)+'deg')}
-function move(e){if(reduced.matches||!fine.matches)return;hover=true;const r=stage.getBoundingClientRect();set(Math.max(-.5,Math.min(.5,(e.clientX-r.left)/r.width-.5)),Math.max(-.5,Math.min(.5,(e.clientY-r.top)/r.height-.5)))}
-function animate(now){if(reduced.matches){set(0,0);frame=0;return}if(!hover&&now-last>30){const k=(now-start)/1800;set(Math.sin(k)*.22,Math.cos(k*.8)*.12);last=now}frame=requestAnimationFrame(animate)}
-stage.addEventListener('pointermove',move);stage.addEventListener('pointerleave',()=>{hover=false});
-reduced.addEventListener('change',()=>{cancelAnimationFrame(frame);frame=0;set(0,0);if(!reduced.matches)frame=requestAnimationFrame(animate)});
-if(!reduced.matches)frame=requestAnimationFrame(animate);
+const tilt=document.getElementById('tilt'),reduced=matchMedia('(prefers-reduced-motion:reduce)'),fine=matchMedia('(pointer:fine)');
+let frame=0,hover=false,x=0,y=0,tx=0,ty=0,start=performance.now();
+function move(e){if(reduced.matches||!fine.matches)return;hover=true;tx=Math.max(-1,Math.min(1,e.clientX/innerWidth*2-1));ty=Math.max(-1,Math.min(1,e.clientY/innerHeight*2-1))}
+function animate(now){if(reduced.matches){reset();return}if(!hover){const k=(now-start)/1800;tx=Math.sin(k)*.16;ty=Math.cos(k*.8)*.09}x+=(tx-x)*.085;y+=(ty-y)*.085;
+tilt.style.setProperty('--ry',(x*18).toFixed(3)+'deg');tilt.style.setProperty('--rx',(-y*14).toFixed(3)+'deg');tilt.style.setProperty('--mx',(50+x*35).toFixed(2)+'%');tilt.style.setProperty('--my',(50+y*35).toFixed(2)+'%');tilt.style.setProperty('--drift-x',(x*15).toFixed(2)+'px');tilt.style.setProperty('--drift-y',(y*11).toFixed(2)+'px');
+frame=requestAnimationFrame(animate)}
+function reset(){cancelAnimationFrame(frame);frame=0;x=y=tx=ty=0;tilt.style.setProperty('--rx','0deg');tilt.style.setProperty('--ry','0deg');tilt.style.setProperty('--drift-x','0px');tilt.style.setProperty('--drift-y','0px')}
+window.addEventListener('pointermove',move,{passive:true});document.documentElement.addEventListener('pointerleave',()=>{hover=false});window.addEventListener('blur',()=>{hover=false});
+reduced.addEventListener('change',()=>{reset();if(!reduced.matches)frame=requestAnimationFrame(animate)});if(!reduced.matches)frame=requestAnimationFrame(animate);
 })();
 </script>
-</body>
-</html>
+</body></html>
